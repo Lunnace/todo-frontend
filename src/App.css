@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
 .App {
   text-align: center;
 }
@@ -35,4 +37,20 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.todo-title {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2rem;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.creator-credit {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #888;
+  margin-top: 18px;
+  font-family: 'Montserrat', sans-serif;
 }

@@ -3,6 +3,7 @@ import { TextField, Button, Container, Table, TableBody, TableCell, TableHead, T
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { differenceInCalendarDays } from 'date-fns';
+import './App.css';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -64,7 +65,7 @@ function App() {
   return (
     <Container maxWidth="sm" style={{ marginTop: 40 }}>
       <Paper style={{ padding: 20 }}>
-        <h2>Todo List</h2>
+        <h2 className="todo-title">Todo List</h2>
         <TextField
           label="Task"
           value={description}
@@ -138,6 +139,7 @@ function App() {
           </TableBody>
         </Table>
       </Paper>
+      <div className="creator-credit">by lunace</div>
     </Container>
   );
 }
