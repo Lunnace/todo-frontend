@@ -11,12 +11,17 @@ function App() {
   const [startDate, setStartDate] = useState(null);
   const [deadline, setDeadline] = useState(null);
   const [lastDeleted, setLastDeleted] = useState(null);
+  const [token, setToken] = useState(null); // username as token
+  const [showRegister, setShowRegister] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [authFields, setAuthFields] = useState({ username: '', password: '' });
 
   useEffect(() => {
-    fetch('https://todo-backend-x6ue.onrender.com/tasks')
+    if (!token) return;
+    fetch(`https://todo-backend-x6ue.onrender.com/tasks?user=${token}`)
       .then(res => res.json())
       .then(data => setTasks(data.filter(task => !task.done)));
-  }, []);
+  }, [token]);
 
   const handleAddTask = () => {
     fetch('https://todo-backend-x6ue.onrender.com/tasks', {
@@ -61,6 +66,96 @@ function App() {
         setLastDeleted(null);
       });
   };
+
+  // Registration
+  const handleRegister = (e) => {
+    e.preventDefault();
+    setAuthError('');
+    fetch('https://todo-backend-x6ue.onrender.com/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(authFields)
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Registration failed');
+        return res.json();
+      })
+      .then(() => {
+        setShowRegister(false);
+        setAuthFields({ username: '', password: '' });
+        setAuthError('Registration successful! Please log in.');
+      })
+      .catch(() => setAuthError('Registration failed. Username may already exist.'));
+  };
+
+  // Login
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setAuthError('');
+    fetch('https://todo-backend-x6ue.onrender.com/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(authFields)
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Login failed');
+        return res.json();
+      })
+      .then(data => {
+        setToken(data.token);
+        setAuthFields({ username: '', password: '' });
+        setAuthError('');
+      })
+      .catch(() => setAuthError('Login failed. Check your credentials.'));
+  };
+
+  if (!token) {
+    return (
+      <Container maxWidth="sm" style={{ marginTop: 40 }}>
+        <Paper style={{ padding: 20 }}>
+          <h2 className="todo-title">{showRegister ? 'Register' : 'Login'}</h2>
+          <form onSubmit={showRegister ? handleRegister : handleLogin}>
+            <TextField
+              label="Username"
+              value={authFields.username}
+              onChange={e => setAuthFields({ ...authFields, username: e.target.value })}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Password"
+              type="password"
+              value={authFields.password}
+              onChange={e => setAuthFields({ ...authFields, password: e.target.value })}
+              fullWidth
+              margin="normal"
+              required
+            />
+            {authError && <div style={{ color: 'red', marginBottom: 10 }}>{authError}</div>}
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              style={{ marginTop: 20 }}
+              fullWidth
+            >
+              {showRegister ? 'Register' : 'Login'}
+            </Button>
+          </form>
+          <Button
+            color="secondary"
+            style={{ marginTop: 10 }}
+            onClick={() => { setShowRegister(!showRegister); setAuthError(''); }}
+            fullWidth
+          >
+            {showRegister ? 'Already have an account? Login' : "Don't have an account? Register"}
+          </Button>
+        </Paper>
+        <div className="creator-credit">by lunace</div>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="sm" style={{ marginTop: 40 }}>
