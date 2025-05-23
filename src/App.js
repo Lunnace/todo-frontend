@@ -51,15 +51,11 @@ function App() {
 
   const handleUndo = () => {
     if (!lastDeleted) return;
+    const { description, start_date, deadline, done } = lastDeleted.task;
     fetch(`https://todo-backend-x6ue.onrender.com/tasks?user=${token}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        description: lastDeleted.task.description,
-        start_date: lastDeleted.task.start_date,
-        deadline: lastDeleted.task.deadline,
-        done: lastDeleted.task.done
-      })
+      body: JSON.stringify({ description, start_date, deadline, done })
     })
       .then(res => res.json())
       .then(task => {
