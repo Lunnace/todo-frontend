@@ -219,7 +219,7 @@ function App() {
               if (daysLeft < 2) deadlineColor = '#ffd6d6'; // pastel red
               else if (daysLeft <= 5) deadlineColor = '#ffe5b4'; // pastel orange
               return (
-                <TableRow key={idx}>
+                <TableRow key={task.id || idx}>
                   <TableCell>
                     <Checkbox color="primary" onChange={() => handleTaskDone(idx)} />
                   </TableCell>
