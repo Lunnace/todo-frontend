@@ -24,11 +24,11 @@ function App() {
   }, [token]);
 
   const handleAddTask = () => {
-    fetch('https://todo-backend-x6ue.onrender.com/tasks', {
+    fetch(`https://todo-backend-x6ue.onrender.com/tasks?user=${token}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        description,
+        description: description,
         start_date: startDate.toISOString().split('T')[0],
         deadline: deadline.toISOString().split('T')[0],
         done: false
