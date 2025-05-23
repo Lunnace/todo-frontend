@@ -139,7 +139,7 @@ function App() {
           </TableBody>
         </Table>
       </Paper>
-      <div className="creator-credit">by lunace</div>
+      <div className="creator-credit">by Lunace</div>
     </Container>
   );
 }
